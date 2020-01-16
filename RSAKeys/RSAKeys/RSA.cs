@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,15 +38,17 @@ namespace RSAKeys
                 }
                 k++;
             }
+            Console.WriteLine($"D: {d}");
         }
 
-        public string Encrypt(string text)
+        public (IEnumerable<BigInteger> codes, string result) Encrypt(string text)
         {
-            List<int> resultCodes = new List<int>();
+            List<BigInteger> resultCodes = new List<BigInteger>();
 
             for (int i=0; i < text.Length; i++)
             {
-                resultCodes.Add((text[i]^e) % n);  
+                BigInteger numb = BigInteger.ModPow(text[i], e, n);
+                resultCodes.Add(numb);  
             }
 
             string result = "";
@@ -53,16 +56,17 @@ namespace RSAKeys
             {
                 result += (char)code;
             }
-            return result;
+            return (resultCodes, result);
         }
 
         public string Decrypt(string text)
         {
-            List<int> resultCodes = new List<int>();
+            List<BigInteger> resultCodes = new List<BigInteger>();
 
             for (int i = 0; i < text.Length; i++)
             {
-                resultCodes.Add((text[i] ^ d) % n);
+                BigInteger numb = BigInteger.ModPow(text[i], d, n);
+                resultCodes.Add(numb);
             }
 
             string result = "";

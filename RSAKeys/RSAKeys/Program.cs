@@ -10,17 +10,20 @@ namespace RSAKeys
     {
         static void Main(string[] args)
         {
-            int p = 29;
-            int q = 73;
-            var text = "CBC";
+            int p = 23;
+            int q = 79;
+            var text = "CAD";
 
             var rsa = new RSA(p, q);
             Console.WriteLine($"string: {text}");
 
             var encrypted = rsa.Encrypt(text);
-            Console.WriteLine($"encrypted: {encrypted}");
+            foreach (var code in encrypted.codes)
+            {
+                Console.Write($"{code} ");
+            }
 
-            var decrypted = rsa.Decrypt(encrypted);
+            var decrypted = rsa.Decrypt(encrypted.result);
             Console.WriteLine($"decrypted: {decrypted}");
         }
     }
